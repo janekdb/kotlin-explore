@@ -14,7 +14,7 @@ internal class GridTest {
     }
 
     @Test
-    fun addingGliderIncreasesLiveCells(){
+    fun addingGliderIncreasesLiveCells() {
         val side = 10
         val grid = Grid(side)
         grid.addGlider()
@@ -22,8 +22,18 @@ internal class GridTest {
         assertEquals(5, liveCells)
     }
 
+    @Test
+    fun killAllCellsKillsAllCells() {
+        val side = 5
+        val grid = Grid(side)
+        grid.addGlider()
+        grid.killAllCells()
+        val liveCells = countLiveCells(grid.cells)
+        assertEquals(0, liveCells)
+    }
+
     private fun countLiveCells(cells: Array<Array<Int>>): Int {
-        val rowCounts = cells.map{it.sum()}
+        val rowCounts = cells.map { it.sum() }
         return rowCounts.sum()
     }
 }

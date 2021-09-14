@@ -34,10 +34,18 @@ class Grid(private val side: Int) {
          */
     }
 
+    fun killAllCells() {
+        for (row in 0 until side) {
+            for (col in 0 until side) {
+                cells[row].set(col, 0)
+            }
+        }
+    }
+    
     fun randomize() {
         val rand = Random(System.currentTimeMillis())
         (0 until side).forEach {
-            cells[it] = Array(side) { rand.nextInt(2)}
+            cells[it] = Array(side) { rand.nextInt(2) }
         }
 //        cells.forEach {
 //            (0..it.size).forEach

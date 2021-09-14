@@ -18,6 +18,10 @@ class Life(private val lifeFrame: LifeFrame, cellsPerSide: Int) {
         }
     }
 
+    fun killAllCells() {
+        grid.killAllCells()
+    }
+
     fun displayPrint() {
         println("The Grid")
         grid.cells.forEach { row ->

@@ -2,6 +2,7 @@
 
 package life
 
+import life.control.ControlsFrame
 import java.awt.*
 import kotlin.concurrent.fixedRateTimer
 
@@ -13,14 +14,15 @@ private const val TITLE = "Kotlin life.Life"
 private const val CELLS_PER_SIDE = 150
 
 private fun createAndShowUI() {
-    val frame = LifeFrame(TITLE, CELLS_PER_SIDE)
-    frame.isVisible = true
 
-    val life = Life(frame, CELLS_PER_SIDE)
+    val life = createLife()
+
     life.display()
     life.addGlider()
     life.randomize()
     life.display()
+
+    createControls(life)
 
     fixedRateTimer(
         name = "generation-timer",
@@ -30,4 +32,20 @@ private fun createAndShowUI() {
         life.display()
     }
 
+}
+
+private fun createLife(): Life {
+    val frame = LifeFrame(TITLE, CELLS_PER_SIDE)
+    frame.isVisible = true
+    return Life(frame, CELLS_PER_SIDE)
+}
+
+private fun createControls(life: Life) {
+    val killLambda = {
+        life.killAllCells()
+        life.display()
+    }
+    val frame = ControlsFrame(killLambda)
+    frame.isVisible = true
+//    return Controls(frame)
 }
