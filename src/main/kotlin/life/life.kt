@@ -41,11 +41,15 @@ private fun createLife(): Life {
 }
 
 private fun createControls(life: Life) {
-    val killLambda = {
+    val kill = {
         life.killAllCells()
         life.display()
     }
-    val frame = ControlsFrame(killLambda)
+    val addGlider = {
+        life.addGlider()
+        life.display()
+    }
+    val frame = ControlsFrame(kill, addGlider)
     frame.isVisible = true
 //    return Controls(frame)
 }
