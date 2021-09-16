@@ -9,13 +9,15 @@ import javax.swing.JPanel
 
 private const val KILL = "Kill All Cells"
 private const val ADD_GLIDER = "Add Glider"
+private const val ADD_GLIDER_GUN = "Add Glider Gun"
 
 private const val CONTROLS_WIDTH = 200
 private const val CONTROLS_HEIGHT = 200
 
 class ControlsFrame(
     private val killAction: () -> Unit,
-    private val addGliderAction: () -> Unit
+    private val addGliderAction: () -> Unit,
+    private val addGliderGunAction: () -> Unit
 ) : JFrame() {
 
     init {
@@ -36,14 +38,11 @@ class ControlsFrame(
         panel.layout = BoxLayout(panel, BoxLayout.Y_AXIS)
         contentPanel.add(panel)
 
-        val killButton = createButton(KILL, killAction)
-        val addGliderButton = createButton(ADD_GLIDER, addGliderAction)
-
-        panel.add(killButton)
-        panel.add(addGliderButton)
+        panel.add(createButton(KILL, killAction))
+        panel.add(createButton(ADD_GLIDER, addGliderAction))
+        panel.add(createButton(ADD_GLIDER_GUN, addGliderGunAction))
 
         contentPane = contentPanel
-//        pack()
     }
 
     private fun createButton(title: String, action: () -> Unit): JButton {

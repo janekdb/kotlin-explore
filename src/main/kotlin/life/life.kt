@@ -49,7 +49,10 @@ private fun createControls(life: Life) {
         life.addGlider()
         life.display()
     }
-    val frame = ControlsFrame(kill, addGlider)
+    val addGliderGun = {
+        life.addGliderGun()
+        life.display()
+    }
+    val frame = ControlsFrame(kill, addGlider, addGliderGun)
     frame.isVisible = true
-//    return Controls(frame)
 }

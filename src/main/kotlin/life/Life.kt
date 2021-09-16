@@ -17,7 +17,6 @@ class Life(private val lifeFrame: LifeFrame, cellsPerSide: Int) {
             rowIdx++
         }
     }
-
     fun killAllCells() {
         grid.killAllCells()
     }
@@ -37,9 +36,9 @@ class Life(private val lifeFrame: LifeFrame, cellsPerSide: Int) {
         print(char)
     }
 
-    fun addGlider() {
-        grid.addGlider()
-    }
+    fun addGlider() = grid.addGlider()
+
+    fun addGliderGun() = grid.addGliderGun()
 
     fun randomize() {
         grid.randomize()

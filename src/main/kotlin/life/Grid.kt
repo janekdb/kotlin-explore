@@ -2,7 +2,6 @@ package life
 
 import kotlin.random.Random
 
-private data class Offset(val x: Int, val y: Int)
 private data class Position(val col: Int, val row: Int)
 
 /**
@@ -23,15 +22,19 @@ class Grid(private val side: Int) {
     private fun p(col: Int, row: Int) = Position(col, row)
 
     fun addGlider() {
-        val offsets = setOf(o(1, 0), o(2, 1), o(0, 2), o(1, 2), o(2, 2))
+        val offsets = Library.offsets(Library.GLIDER)
+        setOffsets(offsets,5, 5)
+    }
+
+    fun addGliderGun() {
+        val offsets = Library.offsets(Library.GOSPER_GLIDER_GUN)
+        setOffsets(offsets, 20, 20)
+    }
+
+    private fun setOffsets(offsets: Set<Offset>, originX: Int, originY: Int) {
         offsets.forEach {
-            cells[it.y].set(it.x, 1)
+            cells[it.y + originY].set(it.x + originX, 1)
         }
-        /**
-         * .x.
-         * ..x
-         * xxx
-         */
     }
 
     fun killAllCells() {
