@@ -40,6 +40,8 @@ class Life(private val lifeFrame: LifeFrame, cellsPerSide: Int) {
 
     fun addGliderGun() = grid.addGliderGun()
 
+    fun addCopperhead() = grid.addCopperhead()
+
     fun randomize() {
         grid.randomize()
     }

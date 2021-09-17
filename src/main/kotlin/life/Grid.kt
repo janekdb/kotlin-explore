@@ -31,6 +31,11 @@ class Grid(private val side: Int) {
         setOffsets(offsets, 20, 20)
     }
 
+    fun addCopperhead(){
+        val offsets = Library.offsets(Library.COPPERHEAD)
+        setOffsets(offsets, side/2, side - 20)
+    }
+
     private fun setOffsets(offsets: Set<Offset>, originX: Int, originY: Int) {
         offsets.forEach {
             cells[it.y + originY].set(it.x + originX, 1)
