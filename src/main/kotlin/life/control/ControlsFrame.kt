@@ -1,7 +1,5 @@
 package life.control
 
-import java.awt.event.ActionEvent
-import java.awt.event.ActionListener
 import javax.swing.BoxLayout
 import javax.swing.JButton
 import javax.swing.JFrame
@@ -11,6 +9,7 @@ private const val KILL = "Kill All Cells"
 private const val ADD_GLIDER = "Add Glider"
 private const val ADD_GLIDER_GUN = "Add Glider Gun"
 private const val ADD_COPPERHEAD = "Add Copperhead"
+private const val ADD_NOAHS_ARK = "Add Noahs Ark"
 
 private const val CONTROLS_WIDTH = 200
 private const val CONTROLS_HEIGHT = 200
@@ -19,7 +18,8 @@ class ControlsFrame(
     private val killAction: () -> Unit,
     private val addGliderAction: () -> Unit,
     private val addGliderGunAction: () -> Unit,
-    private val addCopperheadAction: () -> Unit
+    private val addCopperheadAction: () -> Unit,
+    private val addNoahsArkAction: () -> Unit
 ) : JFrame() {
 
     init {
@@ -44,6 +44,7 @@ class ControlsFrame(
         panel.add(createButton(ADD_GLIDER, addGliderAction))
         panel.add(createButton(ADD_GLIDER_GUN, addGliderGunAction))
         panel.add(createButton(ADD_COPPERHEAD, addCopperheadAction))
+        panel.add(createButton(ADD_NOAHS_ARK, addNoahsArkAction))
 
         contentPane = contentPanel
     }

@@ -23,7 +23,7 @@ class Grid(private val side: Int) {
 
     fun addGlider() {
         val offsets = Library.offsets(Library.GLIDER)
-        setOffsets(offsets,5, 5)
+        setOffsets(offsets, 5, 5)
     }
 
     fun addGliderGun() {
@@ -31,9 +31,14 @@ class Grid(private val side: Int) {
         setOffsets(offsets, 20, 20)
     }
 
-    fun addCopperhead(){
+    fun addCopperhead() {
         val offsets = Library.offsets(Library.COPPERHEAD)
-        setOffsets(offsets, side/2, side - 20)
+        setOffsets(offsets, side / 2, side - 20)
+    }
+
+    fun addNoahsArk() {
+        val offsets = Library.offsets(Library.NOAHS_ARK)
+        setOffsets(offsets, side / 2, side / 2)
     }
 
     private fun setOffsets(offsets: Set<Offset>, originX: Int, originY: Int) {
@@ -49,7 +54,7 @@ class Grid(private val side: Int) {
             }
         }
     }
-    
+
     fun randomize() {
         val rand = Random(System.currentTimeMillis())
         (0 until side).forEach {
