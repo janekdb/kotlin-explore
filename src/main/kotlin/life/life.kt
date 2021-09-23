@@ -26,7 +26,7 @@ private fun createAndShowUI() {
 
     fixedRateTimer(
         name = "generation-timer",
-        initialDelay = 0, period = 100
+        initialDelay = 0, period = 50
     ) {
         life.step()
         life.display()
