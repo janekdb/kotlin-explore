@@ -93,15 +93,11 @@ class Grid(private val side: Int) {
         val left = (col - 1 + side) % side
         val right = (col + 1) % side
 
-        val positions = setOf(
-            p(left, top), p(col, top), p(right, top),
-            p(left, row), p(right, row),
-            p(left, bottom), p(col, bottom), p(right, bottom)
-        )
-        val neighboursAlive = positions.map { position ->
-            cells[position.row][position.col]
-        }
-        val count = neighboursAlive.sum()
+        val count =
+            cells[top][left] + cells[top][col] + cells[top][right] +
+                    cells[row][left] + cells[row][right] +
+                    cells[bottom][left] + cells[bottom][col] + cells[bottom][right]
+
         val thisCell = cells[row][col]
         val nextState = if (thisCell == 1 && (count == 2 || count == 3))
             true
