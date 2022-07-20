@@ -7,6 +7,7 @@ import java.awt.*
 import kotlin.concurrent.fixedRateTimer
 
 fun main() {
+    println("Kotlin version: ${KotlinVersion.CURRENT}")
     EventQueue.invokeLater(::createAndShowUI)
 }
 
