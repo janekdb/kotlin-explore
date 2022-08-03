@@ -4,6 +4,8 @@ import kotlin.random.Random
 
 private data class Position(val col: Int, val row: Int)
 
+class CellOutOfRangeException(message: String) : Exception(message)
+
 /**
  * top left = 0, 0
  * bottom right = 9 9
@@ -42,6 +44,14 @@ class Grid(private val side: Int) {
     }
 
     private fun setOffsets(offsets: Set<Offset>, originX: Int, originY: Int) {
+        val outOfRange = offsets.filter {
+            it.x + originX > side - 1 || it.y + originY > side - 1
+        }
+        if (!outOfRange.isEmpty()) {
+            throw CellOutOfRangeException(
+                "originX: $originX, originY: $originY, outOfRange: $outOfRange, offsets: $offsets"
+            )
+        }
         offsets.forEach {
             cells[it.y + originY].set(it.x + originX, 1)
         }
