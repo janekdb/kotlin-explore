@@ -62,6 +62,10 @@ private fun createControls(life: Life) {
         life.addNoahsArk()
         life.display()
     }
-    val frame = ControlsFrame(kill, addGlider, addGliderGun, addCopperhead, addNoahsArk)
+    val addCrab = {
+        life.addCrab()
+        life.display()
+    }
+    val frame = ControlsFrame(kill, addGlider, addGliderGun, addCopperhead, addNoahsArk, addCrab)
     frame.isVisible = true
 }

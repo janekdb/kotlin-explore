@@ -17,6 +17,9 @@ object Library {
     // https://conwaylife.com/wiki/Noah%27s_ark
     val NOAHS_ARK = "noahs-ark"
 
+    // https://www.conwaylife.com/wiki/Crab
+    val CRAB = "crab"
+
     fun offsets(name: String): Set<Offset> {
         val rows = loadDefinition(name)
         val result = rows.mapIndexed { rowIndex, row ->

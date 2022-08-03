@@ -10,6 +10,7 @@ private const val ADD_GLIDER = "Add Glider"
 private const val ADD_GLIDER_GUN = "Add Glider Gun"
 private const val ADD_COPPERHEAD = "Add Copperhead"
 private const val ADD_NOAHS_ARK = "Add Noahs Ark"
+private const val ADD_CRAB = "Add Crab"
 
 private const val CONTROLS_WIDTH = 200
 private const val CONTROLS_HEIGHT = 200
@@ -19,7 +20,8 @@ class ControlsFrame(
     private val addGliderAction: () -> Unit,
     private val addGliderGunAction: () -> Unit,
     private val addCopperheadAction: () -> Unit,
-    private val addNoahsArkAction: () -> Unit
+    private val addNoahsArkAction: () -> Unit,
+    private val addCrabAction: () -> Unit
 ) : JFrame() {
 
     init {
@@ -45,6 +47,7 @@ class ControlsFrame(
         panel.add(createButton(ADD_GLIDER_GUN, addGliderGunAction))
         panel.add(createButton(ADD_COPPERHEAD, addCopperheadAction))
         panel.add(createButton(ADD_NOAHS_ARK, addNoahsArkAction))
+        panel.add(createButton(ADD_CRAB, addCrabAction))
 
         contentPane = contentPanel
     }

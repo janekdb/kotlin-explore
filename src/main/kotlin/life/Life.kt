@@ -44,6 +44,8 @@ class Life(private val lifeFrame: LifeFrame, cellsPerSide: Int) {
 
     fun addNoahsArk() = grid.addNoahsArk()
 
+    fun addCrab() = grid.addCrab()
+
     fun randomize() {
         grid.randomize()
     }

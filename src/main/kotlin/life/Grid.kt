@@ -43,6 +43,11 @@ class Grid(private val side: Int) {
         setOffsets(offsets, side / 2, side / 2)
     }
 
+    fun addCrab() {
+        val offsets = Library.offsets(Library.CRAB)
+        setOffsets(offsets, side / 2, side / 2)
+    }
+
     private fun setOffsets(offsets: Set<Offset>, originX: Int, originY: Int) {
         val outOfRange = offsets.filter {
             it.x + originX > side - 1 || it.y + originY > side - 1
