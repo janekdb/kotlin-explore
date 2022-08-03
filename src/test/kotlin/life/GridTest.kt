@@ -1,7 +1,9 @@
 package life
 
-import kotlin.test.Test
+import org.junit.jupiter.api.Test
+//import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 internal class GridTest {
 
@@ -24,12 +26,22 @@ internal class GridTest {
 
     @Test
     fun killAllCellsKillsAllCells() {
-        val side = 5
+        val side = 10
         val grid = Grid(side)
         grid.addGlider()
         grid.killAllCells()
         val liveCells = countLiveCells(grid.cells)
         assertEquals(0, liveCells)
+    }
+
+    @Test
+    fun cellsOutOfRangeDetected() {
+        val side = 2
+        val grid = Grid(side)
+        assertFailsWith(
+            exceptionClass = CellOutOfRangeException::class,
+            block = { grid.addGlider() }
+        )
     }
 
     private fun countLiveCells(cells: Array<Array<Int>>): Int {
