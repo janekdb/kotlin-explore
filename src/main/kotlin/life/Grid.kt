@@ -16,8 +16,11 @@ class CellOutOfRangeException(message: String) : Exception(message)
  */
 class Grid(private val side: Int) {
 
+    private fun emptyCells() = Array(side) { Array(side) { 0 } }
+
     // N rows with each row N cols in size
-    val cells = Array(side) { Array(side) { 0 } }
+    var cells = emptyCells()
+        private set
 
     private fun o(x: Int, y: Int) = Offset(x, y)
 
@@ -57,23 +60,25 @@ class Grid(private val side: Int) {
                 "originX: $originX, originY: $originY, outOfRange: $outOfRange, offsets: $offsets"
             )
         }
-        offsets.forEach {
-            cells[it.y + originY].set(it.x + originX, 1)
+        synchronized(this) {
+            offsets.forEach {
+                cells[it.y + originY].set(it.x + originX, 1)
+            }
         }
     }
 
     fun killAllCells() {
-        for (row in 0 until side) {
-            for (col in 0 until side) {
-                cells[row].set(col, 0)
-            }
+        synchronized(this) {
+            cells = emptyCells()
         }
     }
 
     fun randomize() {
         val rand = Random(System.currentTimeMillis())
-        (0 until side).forEach {
-            cells[it] = Array(side) { rand.nextInt(2) }
+        synchronized(this) {
+            (0 until side).forEach {
+                cells[it] = Array(side) { rand.nextInt(2) }
+            }
         }
 //        cells.forEach {
 //            (0..it.size).forEach
@@ -81,18 +86,19 @@ class Grid(private val side: Int) {
 //        }
     }
 
-    fun nextGeneration(): Grid {
+    fun nextGeneration() {
+        val nextCells = emptyCells()
 
-        val next = Grid(side)
-
-        for (row in 0 until side) {
-            for (col in 0 until side) {
-                val alive = calcAlive(row, col)
-                val cell = if (alive) 1 else 0
-                next.cells[row].set(col, cell)
+        synchronized(this) {
+            for (row in 0 until side) {
+                for (col in 0 until side) {
+                    val alive = calcAlive(row, col)
+                    val cell = if (alive) 1 else 0
+                    nextCells[row].set(col, cell)
+                }
             }
+            cells = nextCells
         }
-        return next
     }
 
     /**

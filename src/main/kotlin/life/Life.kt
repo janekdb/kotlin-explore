@@ -51,6 +51,6 @@ class Life(private val lifeFrame: LifeFrame, cellsPerSide: Int) {
     }
 
     fun step() {
-        grid = grid.nextGeneration()
+        grid.nextGeneration()
     }
 }
