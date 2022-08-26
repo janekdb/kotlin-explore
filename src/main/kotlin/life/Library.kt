@@ -6,19 +6,19 @@ data class Offset(val x: Int, val y: Int)
 
 object Library {
 
-    val GLIDER = "glider"
+    const val GLIDER = "glider"
 
     // https://en.wikipedia.org/wiki/Gun_(cellular_automaton)
-    val GOSPER_GLIDER_GUN = "gosper-glider-gun"
+    const val GOSPER_GLIDER_GUN = "gosper-glider-gun"
 
     //https://conwaylife.com/wiki/Copperhead
-    val COPPERHEAD = "copperhead"
+    const val COPPERHEAD = "copperhead"
 
     // https://conwaylife.com/wiki/Noah%27s_ark
-    val NOAHS_ARK = "noahs-ark"
+    const val NOAHS_ARK = "noahs-ark"
 
     // https://www.conwaylife.com/wiki/Crab
-    val CRAB = "crab"
+    const val CRAB = "crab"
 
     fun offsets(name: String): Set<Offset> {
         val rows = loadDefinition(name)

@@ -2,8 +2,6 @@ package life
 
 import kotlin.random.Random
 
-private data class Position(val col: Int, val row: Int)
-
 class CellOutOfRangeException(message: String) : Exception(message)
 
 /**
@@ -21,10 +19,6 @@ class Grid(private val side: Int) {
     // N rows with each row N cols in size
     var cells = emptyCells()
         private set
-
-    private fun o(x: Int, y: Int) = Offset(x, y)
-
-    private fun p(col: Int, row: Int) = Position(col, row)
 
     fun addGlider() {
         val offsets = Library.offsets(Library.GLIDER)
@@ -55,14 +49,14 @@ class Grid(private val side: Int) {
         val outOfRange = offsets.filter {
             it.x + originX > side - 1 || it.y + originY > side - 1
         }
-        if (!outOfRange.isEmpty()) {
+        if (outOfRange.isNotEmpty()) {
             throw CellOutOfRangeException(
                 "originX: $originX, originY: $originY, outOfRange: $outOfRange, offsets: $offsets"
             )
         }
         synchronized(this) {
             offsets.forEach {
-                cells[it.y + originY].set(it.x + originX, 1)
+                cells[it.y + originY][it.x + originX] = 1
             }
         }
     }
@@ -94,7 +88,7 @@ class Grid(private val side: Int) {
                 for (col in 0 until side) {
                     val alive = calcAlive(row, col)
                     val cell = if (alive) 1 else 0
-                    nextCells[row].set(col, cell)
+                    nextCells[row][col] = cell
                 }
             }
             cells = nextCells
