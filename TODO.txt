@@ -1,0 +1,39 @@
+->Auto select an empty area to place the new item
+Change BigBoxFinder to take a minimum box size to find
+    This allows the search to be restricted by starting the
+    check at the minimum size
+Change BigBoxFinder to use the live count method:
+  Take this grid
+    ..X.
+    .X..
+    ...X
+    X.X.
+    Create a running count of live cell for each row l-r
+    0011
+    0111
+    0001
+    1122
+    Create a running count down each column
+    0011
+    0122
+    0123
+    1245
+    Each cell contains the count of live cell a rectangle from the
+    top-left to the cell includes. It's then simple to check any
+    arbitary rectangle for emptiness by taking the value for the
+    bottom-right, subtracting the value for the left and top
+    surrounding rectangles and adding the value for the top-left
+    corner rectangle. Think size of union of two sets. An optimization
+    to this is to test the size of squares using a binary search on
+    the diagonal length.
+Profile Grid.nextGeneration and calc in parallel
+Add metrics window showing frames per seconds
+Add graph showing frames per second and live cell count
+Widen window
+Reject or prevent negative offsets in Grid.setOffsets
+
+DONE
+----
+DONE: Turn on K2 compiler
+DONE: Prevent premature glider death on add when the zone is busy
+DONE: Fix Crab: When added it looks nothing like a crab

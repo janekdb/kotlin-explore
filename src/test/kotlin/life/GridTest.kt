@@ -44,6 +44,31 @@ internal class GridTest {
         )
     }
 
+    @Test
+    fun constructorOffsetsApplied(){
+        val side = 5
+        val offsets = setOf(Offset(0, 2), Offset(4, 4))
+        val grid = Grid(side, offsets)
+        val liveCells = countLiveCells(grid.cells)
+        assertEquals(2, liveCells)
+    }
+
+    @Test
+    fun deadCellsForRowIsCorrect(){
+        val side = 3
+        // .X.
+        // X.X
+        // XX.
+        val offsets = setOf(
+            Offset(1, 0),
+            Offset(0, 1), Offset(2, 1),
+            Offset(0, 2), Offset(1, 2)
+        )
+        val grid = Grid(side, offsets)
+        assertEquals(listOf(0, 2), grid.deadCellsForRow(0))
+        assertEquals(listOf(1), grid.deadCellsForRow(1))
+        assertEquals(listOf(2), grid.deadCellsForRow(2))
+    }
     private fun countLiveCells(cells: Array<Array<Int>>): Int {
         val rowCounts = cells.map { it.sum() }
         return rowCounts.sum()

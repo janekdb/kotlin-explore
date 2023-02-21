@@ -3,6 +3,7 @@ package life
 import kotlin.random.Random
 
 class CellOutOfRangeException(message: String) : Exception(message)
+class RowOutOfRangeException(message: String) : Exception(message)
 
 /**
  * top left = 0, 0
@@ -12,13 +13,31 @@ class CellOutOfRangeException(message: String) : Exception(message)
  * The right neighbour of the rightmost cell is the leftmost cell in the same row.
  * etc.
  */
-class Grid(private val side: Int) {
+class Grid(private val side: Int, initialCells: Set<Offset> = emptySet()) {
+
+    val width = side
+    val height = side
 
     private fun emptyCells() = Array(side) { Array(side) { 0 } }
 
     // N rows with each row N cols in size
     var cells = emptyCells()
         private set
+
+    init {
+        if (initialCells.isNotEmpty())
+            setOffsets(initialCells, 0, 0)
+    }
+
+    fun deadCellsForRow(row: Int): List<Int> {
+        if (row < 0 || row >= side)
+            throw RowOutOfRangeException("side: $side, row: $row")
+        val row = cells[row]
+        val result = row.mapIndexedNotNull { index, cell ->
+            if (cell == 0) index else null
+        }
+        return result
+    }
 
     fun addGlider() {
         val offsets = Library.offsets(Library.GLIDER)
