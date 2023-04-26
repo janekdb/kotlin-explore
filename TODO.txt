@@ -1,7 +1,8 @@
-->Auto select an empty area to place the new item
 Change BigBoxFinder to take a minimum box size to find
     This allows the search to be restricted by starting the
     check at the minimum size
+Change BigBoxFinder to randomize order of starting pixels when restricting to a minimum
+box size to distribute boxes found evenly over the grid.
 Change BigBoxFinder to use the live count method:
   Take this grid
     ..X.
@@ -31,9 +32,12 @@ Add metrics window showing frames per seconds
 Add graph showing frames per second and live cell count
 Widen window
 Reject or prevent negative offsets in Grid.setOffsets
+Upgrade Kotlin to 1.9 or later
+Randomize orientation of added patterns: Reflect, Rotate
 
 DONE
 ----
+DONE: Auto select an empty area to place the new item
 DONE: Turn on K2 compiler
 DONE: Prevent premature glider death on add when the zone is busy
 DONE: Fix Crab: When added it looks nothing like a crab

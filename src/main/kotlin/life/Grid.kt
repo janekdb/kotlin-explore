@@ -1,5 +1,6 @@
 package life
 
+import java.lang.IllegalStateException
 import kotlin.random.Random
 
 class CellOutOfRangeException(message: String) : Exception(message)
@@ -39,29 +40,62 @@ class Grid(private val side: Int, initialCells: Set<Offset> = emptySet()) {
         return result
     }
 
-    fun addGlider() {
-        val offsets = Library.offsets(Library.GLIDER)
-        setOffsets(offsets, 5, 5)
+    fun addGlider(): Boolean {
+        val result = addPattern(Library.GLIDER)
+        return result
     }
 
-    fun addGliderGun() {
-        val offsets = Library.offsets(Library.GOSPER_GLIDER_GUN)
-        setOffsets(offsets, 20, 20)
+    fun addGliderGun() : Boolean {
+        val result = addPattern(Library.GOSPER_GLIDER_GUN)
+        return result
     }
 
-    fun addCopperhead() {
-        val offsets = Library.offsets(Library.COPPERHEAD)
-        setOffsets(offsets, side / 2, side - 20)
+    fun addCopperhead(): Boolean {
+        val result = addPattern(Library.COPPERHEAD)
+        return result
     }
 
-    fun addNoahsArk() {
-        val offsets = Library.offsets(Library.NOAHS_ARK)
-        setOffsets(offsets, side / 2, side / 2)
+    fun addNoahsArk() : Boolean {
+        val result = addPattern(Library.NOAHS_ARK)
+        return result
     }
 
-    fun addCrab() {
-        val offsets = Library.offsets(Library.CRAB)
-        setOffsets(offsets, side / 2, side / 2)
+    fun addCrab() : Boolean {
+        val result = addPattern(Library.CRAB)
+        return result
+    }
+
+    // TODO: Add some randomness
+    // Pick from biggest boxes at random
+    // Sometimes take a big enough but not biggest box
+    private fun findBiggestBox(): Box {
+        val finder = BigBoxFinder()
+        val foundBoxes = finder.findBoxes(this)
+        // TODO: Do not throw exception when no boxes found
+        if (foundBoxes.isEmpty())
+            throw IllegalStateException("TODO: No box")
+        val first = foundBoxes.first()
+        return first
+    }
+
+    private fun addPattern(name: String): Boolean {
+        val box = findBiggestBox()
+        val offsets = Library.offsets(name)
+        val width = offsets.map { it.x }.max() + 1
+        if (width > box.width)
+            return false
+        val height = offsets.map { it.y }.max() + 1
+        if (height > box.height)
+            return false
+        val spareHorizontalCells = box.width - width
+        val leftMargin = spareHorizontalCells / 2
+        val xOffset = box.left + leftMargin
+        val spareVerticalCells = box.height - height
+        val topMargin = spareVerticalCells / 2
+        val yOffset = box.top + topMargin
+        println("Placing pattern: $name: width $width, height: $height")
+        setOffsets(offsets, xOffset, yOffset)
+        return true
     }
 
     private fun setOffsets(offsets: Set<Offset>, originX: Int, originY: Int) {

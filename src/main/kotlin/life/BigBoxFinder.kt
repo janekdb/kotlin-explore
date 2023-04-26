@@ -6,7 +6,10 @@ package life
  * The width of the box is right - left + 1.
  * The height of the box is bottom - top + 1.
  */
-data class Box(val left: Int, val top: Int, val right: Int, val bottom: Int)
+data class Box(val left: Int, val top: Int, val right: Int, val bottom: Int) {
+    val width = right - left + 1
+    val height = bottom - top + 1
+}
 
 /**
  * Given a Grid find the biggest unoccupied boxes. All boxes are squares.
@@ -31,7 +34,6 @@ class BigBoxFinder {
             val deadCells = grid.deadCellsForRow(row)
             deadCells.map { col -> Offset(col, row) }
         }
-        println("startingCells: " + startingCells)
         val largestSquares = startingCells.map { topLeftDeadCell ->
 
             //start in dead cell

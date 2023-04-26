@@ -85,10 +85,10 @@ internal class BigBoxFinderTest {
     @Test
     fun findsNoBoxesWhenAllCellsAreAlive() {
         val side = 4
-        val initialCells = (0 until side).flatMap {
-            x -> (0 until side).map{
-                y -> Offset(x, y)
-        }
+        val initialCells = (0 until side).flatMap { x ->
+            (0 until side).map { y ->
+                Offset(x, y)
+            }
         }.toSet()
         val grid = Grid(side, initialCells)
         printGrid(grid)
@@ -99,12 +99,12 @@ internal class BigBoxFinderTest {
 
     private fun printGrid(grid: Grid) {
         val cells = grid.cells
-     for(row in 0 until grid.height) {
-         for(col in 0 until grid.width){
-             print(cells[row][col])
-         }
-         println()
-     }
+        for (row in 0 until grid.height) {
+            for (col in 0 until grid.width) {
+                print(cells[row][col])
+            }
+            println()
+        }
     }
 
 }
