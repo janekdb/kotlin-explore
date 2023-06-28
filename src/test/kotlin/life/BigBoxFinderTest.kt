@@ -3,6 +3,7 @@ package life
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import kotlin.test.assertFailsWith
 
 // TODO: Account for wrap around
 internal class BigBoxFinderTest {
@@ -95,6 +96,137 @@ internal class BigBoxFinderTest {
         val finder = BigBoxFinder()
         val foundBoxes = finder.findBoxes(grid)
         assertTrue(foundBoxes.isEmpty())
+    }
+
+    /**
+
+    found box:Box(left=0, top=0, right=2, bottom=2)
+    found box:Box(left=1, top=0, right=2, bottom=1)
+    found box:Box(left=0, top=1, right=1, bottom=2)
+
+     * xxx
+     * xxx
+     * xxx
+     *
+     * .xx
+     * .xx
+     * ...
+     *
+     * ...
+     * xx.
+     * xx.
+     *
+    found box:Box(left=1, top=1, right=2, bottom=2)
+    found box:Box(left=2, top=0, right=2, bottom=0)
+    found box:Box(left=2, top=1, right=2, bottom=1)
+
+     *
+     * ...
+     * .xx
+     * .xx
+     *
+     * ..x
+     * ...
+     * ...
+     *
+     * ...
+     * ..x
+     * ...
+
+    found box:Box(left=0, top=2, right=0, bottom=2)
+    found box:Box(left=1, top=2, right=1, bottom=2)
+    found box:Box(left=2, top=2, right=2, bottom=2)
+
+     *
+     * ...
+     * ...
+     * x..
+     *
+     * ...
+     * ...
+     * .x.
+     *
+     * ...
+     * ...
+     * ..x
+     *
+     *
+     */
+
+    /**
+
+    These are the boxes that should be found
+
+    found box:Box(left=0, top=0, right=2, bottom=2)
+    found box:Box(left=0, top=0, right=1, bottom=1)
+    found box:Box(left=1, top=0, right=2, bottom=1)
+    found box:Box(left=0, top=1, right=1, bottom=2)
+    found box:Box(left=1, top=1, right=2, bottom=2)
+
+     * xxx
+     * xxx
+     * xxx
+     *
+     * xx.
+     * xx.
+     * ...
+     *
+     * .xx
+     * .xx
+     * ...
+     *
+     * ...
+     * xx.
+     * xx.
+     *
+     * ...
+     * .xx
+     * .xx
+     *
+     */
+    @Test
+    fun findsBoxesWhenGridIsEmptyWithMinimumRequiredBoxSize() {
+        val side = 3
+        val grid = Grid(side)
+        val finder = BigBoxFinder()
+        val minimumSize = 2
+        val foundBoxes = finder.findBoxes(grid, minimumSize)
+//        assertEquals(5, foundBoxes.size)
+        for (box in foundBoxes) {
+            println("found box: " + box + ": width: ${box.width}")
+        }
+        /* Don't assume we have squares */
+        val unexpectedSmallBoxes = foundBoxes.filter { box -> box.width < minimumSize || box.height < minimumSize }
+        assertTrue(
+            unexpectedSmallBoxes.isEmpty(),
+            "No boxes were smaller than the minimum size ($minimumSize): " + unexpectedSmallBoxes
+        )
+        val expectedBoxes = setOf(
+            Box(left = 0, top = 0, right = 2, bottom = 2),
+            Box(left = 0, top = 0, right = 1, bottom = 1),
+            Box(left = 1, top = 0, right = 2, bottom = 1),
+            Box(left = 0, top = 1, right = 1, bottom = 2),
+            Box(left = 1, top = 1, right = 2, bottom = 2)
+        )
+        val actualBoxes = foundBoxes.toSet()
+        val unexpectedActualBoxes = actualBoxes - expectedBoxes
+        assertTrue(unexpectedActualBoxes.isEmpty(), "Unexpected actual boxes: " + unexpectedActualBoxes)
+        assertEquals(expectedBoxes, actualBoxes)
+    }
+
+    @Test
+    fun findsBoxesRejectsOutOfBoundsMinimumSize() {
+        val side = 3
+        val grid = Grid(side)
+        val finder = BigBoxFinder()
+        assertFailsWith<IllegalArgumentException>(
+            message = "minimumSize must not be greater than the grid side: minimumSize: 4, grid side: 3",
+            block = { finder.findBoxes(grid, 4) }
+        )
+        assertFailsWith<IllegalArgumentException>(
+            message = "minimumSize must be > 0",
+            block = { finder.findBoxes(grid, 0) }
+        )
     }
 
     private fun printGrid(grid: Grid) {
