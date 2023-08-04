@@ -28,6 +28,10 @@ tasks.withType<KotlinCompile>() {
     kotlinOptions.useK2 = true
 }
 
+tasks.withType<JavaCompile>() {
+    targetCompatibility = "13"
+}
+
 application {
     mainClass.set("life.Main")
 }
