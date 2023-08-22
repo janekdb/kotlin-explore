@@ -18,18 +18,27 @@ data class Box(val left: Int, val top: Int, val right: Int, val bottom: Int) {
  */
 class BigBoxFinder {
     /**
-     * @return A list of all the square boxes that can be placed into the grid
-     * without including a live cell. The list is sorted by box size with the largest first
+     * Find a list of the largest square boxes that can be placed into the grid
+     * without including a live cell. The list is sorted by box size with the largest first.
      *
-     * A square grows down and to the right. By starting the top left in every
+     * Every returned box is at least of size [minimumSize].
+     *
+     * Algo details: A square grows down and to the right. By starting the top left in every
      * dead cell we are guaranteed to find all boxes. This is not an efficient
      * algorithm!
+     *
+     * Because the method finds the largest box that starts at a given top left each top left
+     * point occurs a maximum of once in the returned squares.
+     *
+     * @param grid The grid to search for empty squares
+     * @param minimumSize The minimum size for returned squares
+     * @return A list of the largest square boxes that can be placed into the grid.
      */
     fun findBoxes(grid: Grid, minimumSize: Int = 1): List<Box> {
         val gridWidth = grid.width
         val gridHeight = grid.height
         if (gridHeight != gridWidth)
-            throw Exception("Update range check in growSquare to check row range in addition to column range")
+            throw Exception("Broken assumption: The grid is square. Update range check in growSquare to check row range in addition to column range")
 
         val gridSide = gridHeight
         if (minimumSize > gridSide)
@@ -37,7 +46,8 @@ class BigBoxFinder {
         if (minimumSize <= 0)
             throw IllegalArgumentException("minimumSize must be > 0: minimumSize: $minimumSize")
 
-        // TODO: skip row and cols that are too large (down and to the right) for a large enough square to be started in
+        // TODO: skip row and cols indexes that are too large for a large enough square to be started in and then need to grow down and to the right extending past the bottom or right of the grid
+
 
         // TODO: Add tests to confirm start in dead cell
         val rows = 0 until gridHeight
@@ -52,11 +62,13 @@ class BigBoxFinder {
             val largestSquare = growSquare(initialSquare, grid.cells, gridHeight, gridWidth)
             largestSquare
         }
-        val largestFirst = squares.sortedBy { it.left - it.right }
+        val largeEnough = squares.filter { it -> it.width >= minimumSize }
+        val largestFirst = largeEnough.sortedByDescending { it.width }
         return largestFirst
     }
 
     /**
+     * Attempt to grow the current square. If the square cannot be extended return the current square.
      * @param cells Cells indexed by row then column.
      */
     private fun growSquare(currentSquare: Box, cells: Array<Array<Int>>, height: Int, width: Int): Box {

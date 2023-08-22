@@ -99,6 +99,15 @@ internal class BigBoxFinderTest {
     }
 
     /**
+     *
+    These are the full set of boxes that will be found before the minimum
+    size filtering is applied. Each box is expanded down and to the right
+    as far as possible explaining why this box is not included:
+     *
+     * ...
+     * .x.
+     * ...
+     *
 
     found box:Box(left=0, top=0, right=2, bottom=2)
     found box:Box(left=1, top=0, right=2, bottom=1)
@@ -201,9 +210,12 @@ internal class BigBoxFinderTest {
             unexpectedSmallBoxes.isEmpty(),
             "No boxes were smaller than the minimum size ($minimumSize): " + unexpectedSmallBoxes
         )
+        /**
+        This box is not expected because there is a larger box possible which
+        starts with the same top left: Box(left = 0, top = 0, right = 1, bottom = 1),
+         */
         val expectedBoxes = setOf(
             Box(left = 0, top = 0, right = 2, bottom = 2),
-            Box(left = 0, top = 0, right = 1, bottom = 1),
             Box(left = 1, top = 0, right = 2, bottom = 1),
             Box(left = 0, top = 1, right = 1, bottom = 2),
             Box(left = 1, top = 1, right = 2, bottom = 2)

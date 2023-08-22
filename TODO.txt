@@ -1,8 +1,5 @@
-Change BigBoxFinder to take a minimum box size to find
-    This allows the search to be restricted by starting the
-    check at the minimum size
-Change BigBoxFinder to randomize order of starting pixels when restricting to a minimum
-box size to distribute boxes found evenly over the grid.
+Supply a minimum size to BigBoxFinder when placing a new pattern
+Pick a box at random from the largest boxes when placing the pattern
 Change BigBoxFinder to use the live count method:
   Take this grid
     ..X.
@@ -37,6 +34,11 @@ Randomize orientation of added patterns: Reflect, Rotate
 
 DONE
 ----
+WONT: Change BigBoxFinder to randomize order of starting pixels when restricting to a minimum
+  box size to distribute boxes found evenly over the grid.
+DONE: Change BigBoxFinder to take a minimum box size to find
+    This allows the search to be restricted by starting the
+    check at the minimum size
 DONE: Auto select an empty area to place the new item
 DONE: Turn on K2 compiler
 DONE: Prevent premature glider death on add when the zone is busy
