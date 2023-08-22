@@ -62,7 +62,7 @@ class BigBoxFinder {
             val largestSquare = growSquare(initialSquare, grid.cells, gridHeight, gridWidth)
             largestSquare
         }
-        val largeEnough = squares.filter { it -> it.width >= minimumSize }
+        val largeEnough = squares.filter { it.width >= minimumSize }
         val largestFirst = largeEnough.sortedByDescending { it.width }
         return largestFirst
     }
