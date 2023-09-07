@@ -11,7 +11,7 @@ fun main() {
     EventQueue.invokeLater(::createAndShowUI)
 }
 
-private const val TITLE = "Kotlin life.Life"
+private const val TITLE = "Kotlin Life"
 private const val CELLS_PER_SIDE = 150
 
 private fun createAndShowUI() {
