@@ -19,7 +19,6 @@ private fun createAndShowUI() {
     val life = createLife()
 
     life.display()
-    life.addGlider()
     life.randomize()
     life.display()
 
