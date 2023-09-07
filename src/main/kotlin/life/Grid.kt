@@ -45,7 +45,7 @@ class Grid(private val side: Int, initialCells: Set<Offset> = emptySet()) {
         return result
     }
 
-    fun addGliderGun() : Boolean {
+    fun addGliderGun(): Boolean {
         val result = addPattern(Library.GOSPER_GLIDER_GUN)
         return result
     }
@@ -55,12 +55,12 @@ class Grid(private val side: Int, initialCells: Set<Offset> = emptySet()) {
         return result
     }
 
-    fun addNoahsArk() : Boolean {
+    fun addNoahsArk(): Boolean {
         val result = addPattern(Library.NOAHS_ARK)
         return result
     }
 
-    fun addCrab() : Boolean {
+    fun addCrab(): Boolean {
         val result = addPattern(Library.CRAB)
         return result
     }
@@ -68,32 +68,39 @@ class Grid(private val side: Int, initialCells: Set<Offset> = emptySet()) {
     // TODO: Add some randomness
     // Pick from biggest boxes at random
     // Sometimes take a big enough but not biggest box
-    private fun findBiggestBox(): Box {
+    private fun findBiggestBox(minimumBoxSize: Int): Box? {
         val finder = BigBoxFinder()
-        val foundBoxes = finder.findBoxes(this)
-        // TODO: Do not throw exception when no boxes found
+        val foundBoxes = finder.findBoxes(this, minimumBoxSize)
         if (foundBoxes.isEmpty())
-            throw IllegalStateException("TODO: No box")
+            return null
         val first = foundBoxes.first()
         return first
     }
 
+    /* The cells to add as a margin around a placed pattern to prevent a newly placed patten immediately interacting with neighbours */
+    private val PATTERN_PLACEMENT_MARGIN = 1
+
     private fun addPattern(name: String): Boolean {
-        val box = findBiggestBox()
         val offsets = Library.offsets(name)
-        val width = offsets.map { it.x }.max() + 1
-        if (width > box.width)
+        val patternWidth = offsets.map { it.x }.max() + 1
+        val patternHeight = offsets.map { it.y }.max() + 1
+        val minimumBoxSize = maxOf(patternWidth, patternHeight) + 2 * PATTERN_PLACEMENT_MARGIN
+        val box = findBiggestBox(minimumBoxSize)
+        if (box == null)
             return false
-        val height = offsets.map { it.y }.max() + 1
-        if (height > box.height)
-            return false
-        val spareHorizontalCells = box.width - width
+
+        val spareHorizontalCells = box.width - patternWidth
         val leftMargin = spareHorizontalCells / 2
         val xOffset = box.left + leftMargin
-        val spareVerticalCells = box.height - height
+
+        val spareVerticalCells = box.height - patternHeight
         val topMargin = spareVerticalCells / 2
         val yOffset = box.top + topMargin
-        println("Placing pattern: $name: width $width, height: $height")
+
+//        println("Placing pattern: spareHorizontalCells: $spareHorizontalCells, spareVerticalCells: $spareVerticalCells")
+//        println("Placing pattern: box: $box")
+//        println("Placing pattern: $name: width $patternWidth, height: $patternHeight")
+//        println("Placing pattern: $name: xOffset: $xOffset, yOffset: $yOffset")
         setOffsets(offsets, xOffset, yOffset)
         return true
     }
