@@ -134,10 +134,6 @@ class Grid(private val side: Int, initialCells: Set<Offset> = emptySet()) {
                 cells[it] = Array(side) { rand.nextInt(2) }
             }
         }
-//        cells.forEach {
-//            (0..it.size).forEach
-//            it.set(1, rand.nextInt(2))
-//        }
     }
 
     fun nextGeneration() {

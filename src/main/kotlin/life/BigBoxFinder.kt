@@ -46,14 +46,18 @@ class BigBoxFinder {
         if (minimumSize <= 0)
             throw IllegalArgumentException("minimumSize must be > 0: minimumSize: $minimumSize")
 
-        // TODO: skip row and cols indexes that are too large for a large enough square to be started in and then need to grow down and to the right extending past the bottom or right of the grid
-
+        /**
+         * Skip row and cols indexes that are too large for a large enough square to be started in and
+         * then need to grow down and to the right extending past the bottom or right of the grid
+         */
+        val lastPossibleStartingRow = gridHeight - minimumSize
+        val lastPossibleStaringCol = gridWidth - minimumSize
 
         // TODO: Add tests to confirm start in dead cell
-        val rows = 0 until gridHeight
-        val startingCells = rows.flatMap { row ->
+        val rows = 0..lastPossibleStartingRow
+        val startingCells: List<Offset> = rows.flatMap { row ->
             val deadCells = grid.deadCellsForRow(row)
-            deadCells.map { col -> Offset(col, row) }
+            deadCells.filter { it <= lastPossibleStaringCol }.map { col -> Offset(col, row) }
         }
         val squares = startingCells.map { topLeftDeadCell ->
 
