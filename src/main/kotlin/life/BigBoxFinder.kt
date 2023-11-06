@@ -40,9 +40,6 @@ class BigBoxFinder {
         if (gridHeight != gridWidth)
             throw Exception("Broken assumption: The grid is square. Update range check in growSquare to check row range in addition to column range")
 
-        val gridSide = gridHeight
-        if (minimumSize > gridSide)
-            throw IllegalArgumentException("minimumSize must not be greater than the grid side: minimumSize: $minimumSize, grid side: $gridSide")
         if (minimumSize <= 0)
             throw IllegalArgumentException("minimumSize must be > 0: minimumSize: $minimumSize")
 

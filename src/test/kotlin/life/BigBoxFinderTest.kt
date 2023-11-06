@@ -227,14 +227,20 @@ internal class BigBoxFinderTest {
     }
 
     @Test
-    fun findsBoxesRejectsOutOfBoundsMinimumSize() {
+    fun findBoxesAcceptsMinimumSizeGreaterThanGridSize() {
         val side = 3
         val grid = Grid(side)
         val finder = BigBoxFinder()
-        assertFailsWith<IllegalArgumentException>(
-            message = "minimumSize must not be greater than the grid side: minimumSize: 4, grid side: 3",
-            block = { finder.findBoxes(grid, 4) }
-        )
+        val foundBoxes = finder.findBoxes(grid, minimumSize = side + 1)
+        /* No exception should be thrown */
+        assertTrue(foundBoxes.isEmpty())
+    }
+
+    @Test
+    fun findBoxesRejectsOutOfBoundsMinimumSize() {
+        val side = 3
+        val grid = Grid(side)
+        val finder = BigBoxFinder()
         assertFailsWith<IllegalArgumentException>(
             message = "minimumSize must be > 0",
             block = { finder.findBoxes(grid, 0) }
