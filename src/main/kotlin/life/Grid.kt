@@ -77,11 +77,16 @@ class Grid(private val side: Int, initialCells: Set<Offset> = emptySet()) {
         return first
     }
 
+    private fun addPattern(name: String): Boolean {
+        val offsets = Library.offsets(name)
+        val result = addPattern(offsets)
+        return result
+    }
+
     /* The cells to add as a margin around a placed pattern to prevent a newly placed patten immediately interacting with neighbours */
     private val PATTERN_PLACEMENT_MARGIN = 1
 
-    private fun addPattern(name: String): Boolean {
-        val offsets = Library.offsets(name)
+    fun addPattern(offsets: Set<Offset>): Boolean {
         val patternWidth = offsets.map { it.x }.max() + 1
         val patternHeight = offsets.map { it.y }.max() + 1
         val minimumBoxSize = maxOf(patternWidth, patternHeight) + 2 * PATTERN_PLACEMENT_MARGIN

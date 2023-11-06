@@ -78,16 +78,16 @@ internal class GridTest {
     fun noErrorWhenGridTooNarrowForWideShape(){
         val side = 9
         val grid = Grid(side)
-        val actual = grid.addGliderGun()
-        assertFalse(actual)
+        val wasAdded = grid.addGliderGun()
+        assertFalse(wasAdded)
     }
 
     @Test
     fun noErrorWhenGridTooShortForTallShape(){
         val side = 8
         val grid = Grid(side)
-        val actual = grid.addCopperhead()
-        assertFalse(actual)
+        val wasAdded = grid.addCopperhead()
+        assertFalse(wasAdded)
     }
 
     @Test
