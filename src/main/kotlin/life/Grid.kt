@@ -1,6 +1,5 @@
 package life
 
-import java.lang.IllegalStateException
 import kotlin.random.Random
 
 class CellOutOfRangeException(message: String) : Exception(message)
@@ -40,57 +39,26 @@ class Grid(private val side: Int, initialCells: Set<Offset> = emptySet()) {
         return result
     }
 
-    fun addGlider(): Boolean {
-        val result = addPattern(Library.GLIDER)
-        return result
-    }
-
-    fun addGliderGun(): Boolean {
-        val result = addPattern(Library.GOSPER_GLIDER_GUN)
-        return result
-    }
-
-    fun addCopperhead(): Boolean {
-        val result = addPattern(Library.COPPERHEAD)
-        return result
-    }
-
-    fun addNoahsArk(): Boolean {
-        val result = addPattern(Library.NOAHS_ARK)
-        return result
-    }
-
-    fun addCrab(): Boolean {
-        val result = addPattern(Library.CRAB)
-        return result
-    }
-
     // TODO: Add some randomness
     // Pick from biggest boxes at random
     // Sometimes take a big enough but not biggest box
-    private fun findBiggestBox(minimumBoxSize: Int): Box? {
+    private fun findBiggestBox(minimumBoxSize: Int, boxPicker: BoxPicker): Box? {
         val finder = BigBoxFinder()
         val foundBoxes = finder.findBoxes(this, minimumBoxSize)
         if (foundBoxes.isEmpty())
             return null
-        val first = foundBoxes.first()
-        return first
-    }
-
-    private fun addPattern(name: String): Boolean {
-        val offsets = Library.offsets(name)
-        val result = addPattern(offsets)
-        return result
+        val picked = boxPicker.pickBox(foundBoxes)
+        return picked
     }
 
     /* The cells to add as a margin around a placed pattern to prevent a newly placed patten immediately interacting with neighbours */
     private val PATTERN_PLACEMENT_MARGIN = 1
 
-    fun addPattern(offsets: Set<Offset>): Boolean {
+    fun addPattern(offsets: Set<Offset>, boxPicker: BoxPicker): Boolean {
         val patternWidth = offsets.map { it.x }.max() + 1
         val patternHeight = offsets.map { it.y }.max() + 1
         val minimumBoxSize = maxOf(patternWidth, patternHeight) + 2 * PATTERN_PLACEMENT_MARGIN
-        val box = findBiggestBox(minimumBoxSize)
+        val box = findBiggestBox(minimumBoxSize, boxPicker)
         if (box == null)
             return false
 

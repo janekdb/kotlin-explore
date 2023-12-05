@@ -1,10 +1,19 @@
 package life
 
+class RandomBoxPicker : BoxPicker {
+
+    override fun pickBox(boxes: List<Box>): Box {
+        throw Exception("Unimplemented. Add class and unit test")
+    }
+}
+
 /**
  * John Conway's Game of life.Life
  */
 class Life(private val lifeFrame: LifeFrame, cellsPerSide: Int) {
-    private var grid = Grid(cellsPerSide)
+    private val grid = Grid(cellsPerSide)
+    private val randomBoxPicker = RandomBoxPicker()
+    private val patternAdder = PatternAdder(grid, randomBoxPicker)
 
     fun display() {
         var rowIdx = 0
@@ -17,6 +26,7 @@ class Life(private val lifeFrame: LifeFrame, cellsPerSide: Int) {
             rowIdx++
         }
     }
+
     fun killAllCells() {
         grid.killAllCells()
     }
@@ -36,15 +46,18 @@ class Life(private val lifeFrame: LifeFrame, cellsPerSide: Int) {
         print(char)
     }
 
-    fun addGlider() = grid.addGlider()
+//    grid is a var so maybe having Grid as a constructor param to PatternAdder is a poor choice
+//    try changing var grid to val grid first
 
-    fun addGliderGun() = grid.addGliderGun()
+    fun addGlider() = patternAdder.addGlider()
 
-    fun addCopperhead() = grid.addCopperhead()
+    fun addGliderGun() = patternAdder.addGliderGun()
 
-    fun addNoahsArk() = grid.addNoahsArk()
+    fun addCopperhead() = patternAdder.addCopperhead()
 
-    fun addCrab() = grid.addCrab()
+    fun addNoahsArk() = patternAdder.addNoahsArk()
+
+    fun addCrab() = patternAdder.addCrab()
 
     fun randomize() {
         grid.randomize()
