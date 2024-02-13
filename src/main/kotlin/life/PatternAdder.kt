@@ -5,6 +5,15 @@ package life
  */
 class PatternAdder(private val grid: Grid, private val boxPicker: BoxPicker) {
 
+    fun addBlock(): Boolean {
+        val result = addPattern(Library.BLOCK)
+        return result
+    }
+
+    fun addDeadSparkCoil(): Boolean {
+        val result = addPattern(Library.DEAD_SPARK_COIL)
+        return result
+    }
     fun addGlider(): Boolean {
         val result = addPattern(Library.GLIDER)
         return result

@@ -6,6 +6,10 @@ data class Offset(val x: Int, val y: Int)
 
 object Library {
 
+    const val BLOCK = "block"
+
+    const val DEAD_SPARK_COIL = "dead-spark-coil"
+
     const val GLIDER = "glider"
 
     // https://en.wikipedia.org/wiki/Gun_(cellular_automaton)

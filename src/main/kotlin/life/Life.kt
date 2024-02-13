@@ -1,12 +1,5 @@
 package life
 
-class RandomBoxPicker : BoxPicker {
-
-    override fun pickBox(boxes: List<Box>): Box {
-        throw Exception("Unimplemented. Add class and unit test")
-    }
-}
-
 /**
  * John Conway's Game of life.Life
  */
@@ -48,6 +41,10 @@ class Life(private val lifeFrame: LifeFrame, cellsPerSide: Int) {
 
 //    grid is a var so maybe having Grid as a constructor param to PatternAdder is a poor choice
 //    try changing var grid to val grid first
+
+    fun addBlock() = patternAdder.addBlock()
+
+    fun addDeadSparkCoil() = patternAdder.addDeadSparkCoil()
 
     fun addGlider() = patternAdder.addGlider()
 
