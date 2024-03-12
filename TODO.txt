@@ -23,9 +23,6 @@ Change BigBoxFinder to use the live count method:
     corner rectangle. Think size of union of two sets. An optimization
     to this is to test the size of squares using a binary search on
     the diagonal length.
-Add a block pattern and use to test the RandomBoxPicker
-    Fix bug where patterns appear to be being added too close
-        Reproduce by repeatedly adding dead spark coil
 Profile Grid.nextGeneration and calc in parallel
 Add metrics window showing frames per seconds
 Add graph showing frames per second and live cell count
@@ -37,6 +34,16 @@ Colour a newly placed pattern yellow for the first cycle
 
 DONE
 ----
+DONE: Use a 2 cell border
+    DONE: Add a block pattern and use to test the RandomBoxPicker
+        DONE: Fix bug where patterns appear to be being added too close
+            DONE: Reproduce by repeatedly adding dead spark coil
+            This placement appears to produce immediate change
+              xx
+              xx xx
+                 xx
+            Solution? Use a 2 cell border
+            Placing a pattern should not trigger an immediate change
 DONE: Supply a minimum size to BigBoxFinder when placing a new pattern
 WONT: Change BigBoxFinder to randomize order of starting pixels when restricting to a minimum
   box size to distribute boxes found evenly over the grid.
