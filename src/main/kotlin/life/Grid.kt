@@ -39,9 +39,6 @@ class Grid(private val side: Int, initialCells: Set<Offset> = emptySet()) {
         return result
     }
 
-    // TODO: Add some randomness
-    // Pick from biggest boxes at random
-    // Sometimes take a big enough but not biggest box
     private fun findBiggestBox(minimumBoxSize: Int, boxPicker: BoxPicker): Box? {
         val finder = BigBoxFinder()
         val foundBoxes = finder.findBoxes(this, minimumBoxSize)

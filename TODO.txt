@@ -1,4 +1,3 @@
-Pick a box at random from the largest boxes when placing the pattern
 Change BigBoxFinder to use the live count method:
   Take this grid
     ..X.
@@ -17,7 +16,7 @@ Change BigBoxFinder to use the live count method:
     1245
     Each cell contains the count of live cell a rectangle from the
     top-left to the cell includes. It's then simple to check any
-    arbitary rectangle for emptiness by taking the value for the
+    arbitrary rectangle for emptiness by taking the value for the
     bottom-right, subtracting the value for the left and top
     surrounding rectangles and adding the value for the top-left
     corner rectangle. Think size of union of two sets. An optimization
@@ -34,6 +33,7 @@ Colour a newly placed pattern yellow for the first cycle
 
 DONE
 ----
+DONE: Pick a box at random from the largest boxes when placing the pattern
 DONE: Use a 2 cell border
     DONE: Add a block pattern and use to test the RandomBoxPicker
         DONE: Fix bug where patterns appear to be being added too close

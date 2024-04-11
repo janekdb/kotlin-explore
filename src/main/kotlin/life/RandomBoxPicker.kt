@@ -13,8 +13,6 @@ class RandomBoxPicker : BoxPicker {
      */
     override fun pickBox(boxes: List<Box>): Box {
         if (boxes.isEmpty()) throw EmptyBoxListException()
-//        for(box in boxes)
-//            println("Width: " + box.width)
         val randomIndex = ((random.nextFloat() * random.nextFloat()) * boxes.size).toInt()
         return boxes[randomIndex]
     }
