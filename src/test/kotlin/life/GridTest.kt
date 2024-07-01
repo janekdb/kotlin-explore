@@ -35,20 +35,26 @@ internal class GridTest {
 
     @Test
     fun addedGliderIsCentredInBiggestBox() {
-        val side = 8
-        /* Leave a biggest box of 5x5 */
-        // ........
-        // .xxx....
-        // ........
-        // .x......
-        // ........
-        // ........
-        // ........
-        // .......x
+        val side = 10
+        /* Leave a biggest box of 7x7. The glider is 3x3. Grid.addPattern
+        * requires an empty margin of PATTERN_PLACEMENT_MARGIN around the placed
+        * pattern */
+        //
+        // 0 ..........
+        // 1 .xxx......
+        // 2 ..x.......
+        // 3 .x.......x
+        // 4 ..........
+        // 5 ..........
+        // 6 ..........
+        // 7 ..........
+        // 8 ..........
+        // 9 .........x
         val offsets = setOf(
             Offset(1, 1), Offset(2, 1), Offset(3, 1),
-            Offset(1, 3), Offset(7, 3),
-            Offset(7, 7)
+            Offset(2, 2),
+            Offset(1, 3), Offset(9, 3),
+            Offset(9, 9)
         )
         val grid = Grid(side, offsets)
 //        printGrid(grid)
@@ -61,18 +67,31 @@ internal class GridTest {
         assertEquals(5 + offsets.size, liveCells)
         /* Assert an empty margin around the glider */
         /* Assert the glider fills the centre */
-        val xs = 2..6
-        val ys = 3..5
-        val marginOffsets =
-            xs.map { x -> Offset(x, 2) } +
-                    ys.map { y -> Offset(2, y) } +
-                    xs.map { x -> Offset(x, 6) } +
-                    ys.map { y -> Offset(6, y) }
-        val marginLiveCellCount = marginOffsets.map { offset ->
-            grid.cells[offset.y][offset.x]
-        }.sum()
+        val outerXs = 2..8
+        val outerYs = 3..9
+        val outerSquare = allOffsets(outerXs, outerYs)
+        val innerXs = 4..6
+        val innerYs = 5..7
+        val innerSquare = allOffsets(innerXs, innerYs)
+        val marginOffsets = outerSquare.minus(innerSquare)
+        val marginLiveCellCount = countLiveCells(marginOffsets, grid)
         assertEquals(0, marginLiveCellCount)
-//        println(marginOffsets)
+        val innerSquareLiveCellCount = countLiveCells(innerSquare, grid)
+        assertEquals(5, innerSquareLiveCellCount)
+    }
+
+    private fun countLiveCells(offsets: Set<Offset>, grid: Grid): Int {
+        return offsets.sumOf { offset ->
+            grid.cells[offset.y][offset.x]
+        }
+    }
+
+    private fun allOffsets(xs: IntRange, ys: IntRange): Set<Offset> {
+        val marginOffsets =
+            xs.flatMap { x -> ys.map { y -> Offset(x, y) } }
+
+        println(marginOffsets::class.simpleName)
+        return marginOffsets.toSet()
     }
 
     @Test
