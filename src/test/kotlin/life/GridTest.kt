@@ -105,18 +105,20 @@ internal class GridTest {
 
         val cyclicBoxPicker = CyclicBoxPicker()
 
-        fun topBoxCentreCell(grid: Grid) = grid.cells[1][1]
-        fun bottomBoxCentreCell(grid: Grid) = grid.cells[2][2]
+        fun topBoxCentreCell(grid: Grid) = grid.cells[2][2]
+        fun bottomBoxCentreCell(grid: Grid) = grid.cells[3][3]
 
         fun newGrid(): Grid {
-            val side = 4
-            /* Leave two 3x3 boxes. These are the biggest boxes */
-            // ...x
-            // ....
-            // ....
-            // x...
+            val side = 6
+            /* Leave two 5x5 boxes. These are the biggest boxes */
+            // .....x
+            // ......
+            // ......
+            // ......
+            // ......
+            // x.....
             val offsets = setOf(
-                Offset(3, 0), Offset(0, 3)
+                Offset(5, 0), Offset(0, 5)
             )
             val grid = Grid(side, offsets)
             //printGrid(grid)
