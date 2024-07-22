@@ -143,12 +143,18 @@ class Grid(private val side: Int, initialCells: Set<Offset> = emptySet()) {
                     cells[bottom][left] + cells[bottom][col] + cells[bottom][right]
 
         val thisCell = cells[row][col]
-        val nextState = if (thisCell == 1 && (count == 2 || count == 3))
-            true
-        else if (thisCell == 0 && count == 3)
-            true
-        else
-            false
+        val isAlive = thisCell == 1
+        val nextState =
+            isAliveWithTwoOrThreeNeighbours(isAlive, count) ||
+                    isDeadWithThreeNeighbours(isAlive, count)
         return nextState
+    }
+
+    private fun isAliveWithTwoOrThreeNeighbours(isAlive: Boolean, neighbourCount: Int): Boolean {
+        return isAlive && (neighbourCount == 2 || neighbourCount == 3)
+    }
+
+    private fun isDeadWithThreeNeighbours(isAlive: Boolean, neighbourCount: Int): Boolean {
+        return !isAlive && neighbourCount == 3
     }
 }
