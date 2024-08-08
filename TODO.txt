@@ -4,7 +4,7 @@ Change BigBoxFinder to use the live count method:
     .X..
     ...X
     X.X.
-    Create a running count of live cell for each row l-r
+  Create a running count of live cell for each row l-r
     0011
     0111
     0001
