@@ -1,3 +1,16 @@
+->Add metrics window showing generation statistics
+  DONE: Add class that collects timestamped events
+  DONE: Gather stats
+  DONE: Display stats to stdout
+  DONE: Restore uncluttered step()/display() to inner loop
+  ->Add updates per second average
+  Display stats in window
+Determine why killing all cells increases the step time
+  With many live cells: Average duration for step: 595.242us
+  All cells dead      : Average duration for step: 1.222828ms
+  Hint: There is a logical short circuit with the dead case second
+  Can we calculate in one step?
+
 Change BigBoxFinder to use the live count method:
   Take this grid
     ..X.
@@ -23,7 +36,6 @@ Change BigBoxFinder to use the live count method:
     to this is to test the size of squares using a binary search on
     the diagonal length.
 Profile Grid.nextGeneration and calc in parallel
-Add metrics window showing frames per seconds
 Add graph showing frames per second and live cell count
 Widen window
 Reject or prevent negative offsets in Grid.setOffsets

@@ -3,8 +3,12 @@
 package life
 
 import life.control.ControlsFrame
+import life.obs.Analytics
 import java.awt.*
 import kotlin.concurrent.fixedRateTimer
+import kotlin.system.measureNanoTime
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.nanoseconds
 
 fun main() {
     println("Kotlin version: ${KotlinVersion.CURRENT}")
@@ -24,14 +28,55 @@ private fun createAndShowUI() {
 
     createControls(life)
 
+    val stepLogger = AnalyticsLogger("step")
+    val stepAction = Action(stepLogger) { life.step() }
+
+    val displayLogger = AnalyticsLogger("display")
+    val displayAction = Action(displayLogger) { life.display() }
+
     fixedRateTimer(
         name = "generation-timer",
         initialDelay = 0, period = 50
     ) {
-        life.step()
-        life.display()
+        stepAction.doAction()
+        displayAction.doAction()
     }
 
+}
+
+/**
+ * Helper class to call an action and display the execution time analytics
+ */
+private class Action(
+    private val analyticsLogger: AnalyticsLogger,
+    private val action: () -> Unit
+) {
+    fun doAction(): Unit {
+        val actionNanos = measureNanoTime { action() }
+        analyticsLogger.record(actionNanos.nanoseconds)
+        analyticsLogger.display()
+    }
+}
+
+/**
+ * Helper class to encapsulate collecting and logging of execution times
+ */
+private class AnalyticsLogger(private val label: String) {
+    private val analytics = Analytics()
+    private val displayGapNanos = 10_000_000_000
+    private var nextDisplayNanos = System.nanoTime() + displayGapNanos
+
+    fun record(duration: Duration): Unit {
+        analytics.recordEventDuration(duration)
+    }
+
+    fun display(): Unit {
+        if (System.nanoTime() < nextDisplayNanos)
+            return
+        val average = analytics.averageEventDuration()
+        println("Average duration for $label: $average")
+        nextDisplayNanos = System.nanoTime() + displayGapNanos
+    }
 }
 
 private fun createLife(): Life {
@@ -73,6 +118,7 @@ private fun createControls(life: Life) {
         life.addCrab()
         life.display()
     }
-    val frame = ControlsFrame(kill, addBlock, addDeadSparkCoil, addGlider, addGliderGun, addCopperhead, addNoahsArk, addCrab)
+    val frame =
+        ControlsFrame(kill, addBlock, addDeadSparkCoil, addGlider, addGliderGun, addCopperhead, addNoahsArk, addCrab)
     frame.isVisible = true
 }
