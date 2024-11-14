@@ -4,7 +4,10 @@ import kotlin.math.max
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.nanoseconds
 import kotlin.time.DurationUnit
+import kotlin.time.ExperimentalTime
+import kotlin.time.TimeMark
 
+@OptIn(ExperimentalTime::class)
 class Analytics {
 
     /* Circular buffer */
@@ -24,5 +27,31 @@ class Analytics {
 
         val averageNanos = totalNanos / durationsSize
         return averageNanos.nanoseconds
+    }
+
+    private val MAX_START_TIMES = 100
+    private val startTimes = Array<TimeMark?>(MAX_START_TIMES) { null }
+    private var startTimesNext = 0
+    fun recordEventStartTime(startTime: TimeMark) {
+        startTimes.set(startTimesNext, startTime)
+        startTimesNext++
+    }
+
+    /**
+     * The duration of activity is taken as the duration between the
+     * first event and the last event.
+     * The count of events is one less than total number of recorded events.
+     * An exception is thrown if less than two events have been recorded
+     */
+    fun eventsPerSecond(): Double {
+        val numberOfEvents = startTimesNext - 1
+        if (numberOfEvents < 1)
+            throw RuntimeException("Not at least two events recorded")
+        val windowStart = startTimes[0]
+        require(windowStart != null)
+        val windowEnd = startTimes[startTimesNext - 1]
+        require(windowEnd != null)
+        val intervalSec = (windowStart.elapsedNow() - windowEnd.elapsedNow()).toDouble(DurationUnit.SECONDS)
+        return numberOfEvents / intervalSec
     }
 }
