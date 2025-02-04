@@ -17,7 +17,7 @@ class Analytics {
     private var durationsNext = 0
 
     fun recordEventDuration(duration: Duration): Unit {
-        durations.set(durationsNext, duration)
+        durations[durationsNext] = duration
         durationsSize = max(durationsSize, durationsNext + 1)
         durationsNext = (durationsNext + 1) % MAX_DURATIONS
     }
