@@ -17,6 +17,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.0")
     testImplementation(kotlin("test"))
+    implementation(kotlin("stdlib-jdk8"))
 }
 
 tasks.test {
@@ -24,12 +25,12 @@ tasks.test {
 }
 
 tasks.withType<KotlinCompile>() {
-    kotlinOptions.jvmTarget = "13"
+    kotlinOptions.jvmTarget = "15"
     kotlinOptions.languageVersion = "2.0"
 }
 
 tasks.withType<JavaCompile>() {
-    targetCompatibility = "13"
+    targetCompatibility = "15"
 }
 
 application {
@@ -106,3 +107,11 @@ application {
 ////    version = "11"
 ////    modules("javafx.controls", "javafx.fxml")
 ////}
+val compileKotlin: KotlinCompile by tasks
+compileKotlin.kotlinOptions {
+    jvmTarget = "1.8"
+}
+val compileTestKotlin: KotlinCompile by tasks
+compileTestKotlin.kotlinOptions {
+    jvmTarget = "1.8"
+}
