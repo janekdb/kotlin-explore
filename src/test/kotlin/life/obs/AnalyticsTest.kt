@@ -66,6 +66,41 @@ internal class AnalyticsTest {
                 val expectedEventsPerSec = 2.0 / 6
                 assertEquals(expectedEventsPerSec, actualEventsPerSec, 0.01)
             }
+        }
+    }
+
+    @Test
+    fun forgetsStartTimeHistory() {
+        val timeSource = TimeSource.Monotonic
+        val firstMark = timeSource.markNow()
+        var nextMark = firstMark
+
+        with(Analytics()) {
+            repeat(100) {
+                nextMark = nextMark + 1.seconds
+                recordEventStartTime(nextMark)
+            }
+            run {
+                val actualEventsPerSec = eventsPerSecond()
+                val expectedEventsPerSec = 99.0 / 99
+                assertEquals(expectedEventsPerSec, actualEventsPerSec, 0.001)
+            }
+            nextMark = nextMark + 100.seconds
+            recordEventStartTime(nextMark)
+            run {
+                val actualEventsPerSec = eventsPerSecond()
+                val expectedEventsPerSec = 99.0 / (98 + 100)
+                assertEquals(expectedEventsPerSec, actualEventsPerSec, 0.001)
+            }
+            repeat(100) {
+                nextMark = nextMark + 4.seconds
+                recordEventStartTime(nextMark)
+            }
+            run {
+                val actualEventsPerSec = eventsPerSecond()
+                val expectedEventsPerSec = 0.25
+                assertEquals(expectedEventsPerSec, actualEventsPerSec, 0.01)
+            }
 
         }
     }
