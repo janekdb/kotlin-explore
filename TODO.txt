@@ -3,8 +3,16 @@
   DONE: Gather stats
   DONE: Display stats to stdout
   DONE: Restore uncluttered step()/display() to inner loop
-  ->Add updates per second average
+  DONE: Add updates per second average over the last 100 updates
+    DONE: Add inline
+    DONE: Factor out
+    DONE: Display every 10 seconds
+  Display stats at the same time using a shared "gate" for step, display and update speed
   Display stats in window
+  Rename Analytics to EventDurationAnalytics
+Optimise Life.display
+  Hint: Skipping setting the bg colour drops the time from 5ms to 1.5ms
+  Hint: This is single threaded at present
 Determine why killing all cells increases the step time
   With many live cells: Average duration for step: 595.242us
   All cells dead      : Average duration for step: 1.222828ms
