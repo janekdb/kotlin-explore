@@ -42,14 +42,18 @@ private fun createAndShowUI() {
 
     val timeSource = TimeSource.Monotonic
 
+    val limiter = Limiter(10)
+
     fixedRateTimer(
         name = "generation-timer",
         initialDelay = 0, period = 25
     ) {
         startTimeLogger.record(timeSource.markNow())
-        stepAction.doAction()
-        displayAction.doAction()
-        startTimeLogger.display()
+        val display = limiter.get()
+        stepAction.doAction(display)
+        displayAction.doAction(display)
+        if (display)
+            startTimeLogger.display()
     }
 
 }
@@ -61,10 +65,30 @@ private class Action(
     private val analyticsLogger: EventDurationAnalyticsLogger,
     private val action: () -> Unit
 ) {
-    fun doAction(): Unit {
+    fun doAction(display: Boolean): Unit {
         val actionNanos = measureNanoTime { action() }
         analyticsLogger.record(actionNanos.nanoseconds)
-        analyticsLogger.display()
+        if (display)
+            analyticsLogger.display()
+    }
+}
+
+/**
+ * Limit the rate at which an action is taken
+ * @param delaySecs The gap to ensure between returning true from [get]
+ */
+private class Limiter(delaySecs: Int) {
+    private val gapNanos = delaySecs.toLong() * 1_000_000_000
+    private var nextNanos = System.nanoTime() + gapNanos
+
+    /** @return true no earlier than `delaySecs` after tha previous
+     * time true was returned
+     */
+    fun get(): Boolean {
+        val result = System.nanoTime() >= nextNanos
+        if (result)
+            nextNanos = System.nanoTime() + gapNanos
+        return result
     }
 }
 
@@ -73,19 +97,14 @@ private class Action(
  */
 private class EventDurationAnalyticsLogger(private val label: String) {
     private val analytics = Analytics()
-    private val displayGapNanos = 10_000_000_000
-    private var nextDisplayNanos = System.nanoTime() + displayGapNanos
 
     fun record(duration: Duration): Unit {
         analytics.recordEventDuration(duration)
     }
 
     fun display(): Unit {
-        if (System.nanoTime() < nextDisplayNanos)
-            return
         val average = analytics.averageEventDuration()
         println("Average duration for $label: $average")
-        nextDisplayNanos = System.nanoTime() + displayGapNanos
     }
 }
 
@@ -95,8 +114,6 @@ private class EventDurationAnalyticsLogger(private val label: String) {
 @OptIn(ExperimentalTime::class)
 private class EventStartTimeAnalyticsLogger(private val label: String) {
     private val analytics = Analytics()
-    private val displayGapNanos = 10_000_000_000
-    private var nextDisplayNanos = System.nanoTime() + displayGapNanos
     private var recordedEvents = 0
 
     fun record(startTime: TimeMark) {
@@ -107,14 +124,11 @@ private class EventStartTimeAnalyticsLogger(private val label: String) {
     }
 
     fun display() {
-        if (System.nanoTime() < nextDisplayNanos)
-            return
-        /* Avoid exception when less than 2 events */
+        /* Avoid exception when fewer than 2 events */
         if (recordedEvents < 2)
             return
         val eventsPerSec = analytics.eventsPerSecond()
         println("Events/sec for $label: $eventsPerSec")
-        nextDisplayNanos = System.nanoTime() + displayGapNanos
     }
 }
 

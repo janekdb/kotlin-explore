@@ -7,8 +7,8 @@
     DONE: Add inline
     DONE: Factor out
     DONE: Display every 10 seconds
-  Display stats at the same time using a shared "gate" for step, display and update speed
-  Display stats in window
+  DONE: Display stats at the same time using a shared "gate" for step, display and update speed
+  ->Display stats in window
   Rename Analytics to EventDurationAnalytics
 Optimise Life.display
   Hint: Skipping setting the bg colour drops the time from 5ms to 1.5ms
